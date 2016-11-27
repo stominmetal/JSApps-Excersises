@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Load Repos</title>
+  <title>Load File</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</head>
+
+<body>
+<h1>Phonebook</h1>
+<ul id="phonebook"></ul>
+<button id="btnLoad">Load</button>
+
+<h2>Create Contact</h2>
+Person: <input type="text" id="person" />
+<br>
+Phone: <input type="text" id="phone" />
+<br>
+<button id="btnCreate">Create</button>
+
+<script>
+$("#btnLoad").on("click", function(){
+  $("#phonebook").empty();
+  let ul = $("#phonebook");
+
+  $.get("https://phonebook-80475.firebaseio.com/.json")
+  .done(function(data){
+    let keys = Object.keys(data);
+    for (let key of keys) {
+      let contact = data[key];
+      let li = $("<li>").text(contact.person + ": " + contact.phone + " ")
+      let a = $("<a>[Delete]</a>").attr('href', '#');
+      a.on('click', function() {
+        console.log(contact.person);
+      })
+      li.append(a);
+      ul.append(li);
+    }
+  })
+  .fail(function() {
+    ul.append("<li>Error</li>");
+  })
+});
+</script>
+
+</body>
+</html>
